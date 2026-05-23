@@ -175,7 +175,7 @@ UI widgets (ConsumerWidget)
 
 - UI **never reads from Firestore directly**. All reads come from providers.
 - Period navigation, search, and filters are computed from the in-memory stream — zero network calls after login.
-- **Firestore reads: 2 per session** (transactions stream + preference stream opened once on login) vs. N per session in the current React web app.
+- **2 stream listeners opened per session** (transactions + preference), both opened once on login and held open. Changes from any source propagate automatically. Compare to the React web app which fires a new `getDocs()` call on every period navigation.
 
 ---
 
