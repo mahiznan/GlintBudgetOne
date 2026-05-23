@@ -70,7 +70,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '662452778435',
     projectId: 'glint-budget-5555',
     storageBucket: 'glint-budget-5555.firebasestorage.app',
+    androidClientId: '662452778435-v8huugkjclebcnmihcbnrcnaf9u0bmhk.apps.googleusercontent.com',
     iosClientId: '662452778435-13vns5jrvbi48hhl3gsb25ev98lko8gf.apps.googleusercontent.com',
     iosBundleId: 'com.glintbudget.glintbudgetone',
   );
+
 }
