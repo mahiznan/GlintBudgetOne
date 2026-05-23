@@ -29,5 +29,20 @@ void main() {
       expect(stats.categoryBreakdown['Food'], 80.0);
       expect(stats.categoryBreakdown['Transport'], 70.0);
     });
+
+    test('equal instances have equal hashCodes', () {
+      final a = DashboardStats(
+        totalIncome: 1000,
+        totalExpense: 500,
+        categoryBreakdown: const {'Food': 300, 'Transport': 200},
+      );
+      final b = DashboardStats(
+        totalIncome: 1000,
+        totalExpense: 500,
+        categoryBreakdown: const {'Food': 300, 'Transport': 200},
+      );
+      expect(a == b, isTrue);
+      expect(a.hashCode, equals(b.hashCode));
+    });
   });
 }

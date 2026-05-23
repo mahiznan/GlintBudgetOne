@@ -105,14 +105,16 @@ class _SyncDot extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (status) {
       SyncStatus.synced => const SizedBox.shrink(),
-      SyncStatus.pending => Tooltip(
+      SyncStatus.pending => const Tooltip(
           message: 'Saving…',
-          child: Container(
+          child: SizedBox(
             width: 10,
             height: 10,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              shape: BoxShape.circle,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.amber,
+                shape: BoxShape.circle,
+              ),
             ),
           ),
         ),

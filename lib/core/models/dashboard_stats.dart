@@ -28,5 +28,9 @@ class DashboardStats {
       mapEquals(other.categoryBreakdown, categoryBreakdown);
 
   @override
-  int get hashCode => Object.hash(totalIncome, totalExpense, categoryBreakdown);
+  int get hashCode => Object.hashAll([
+        totalIncome,
+        totalExpense,
+        ...categoryBreakdown.entries.expand((e) => [e.key, e.value]),
+      ]);
 }

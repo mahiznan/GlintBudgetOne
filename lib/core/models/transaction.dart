@@ -59,6 +59,7 @@ class Transaction {
       Transaction.fromMap(doc.id, doc.data() as Map<String, dynamic>? ?? {});
 
   Map<String, dynamic> toFirestore() => {
+        'id': id,
         'user_id': userId,
         'category': category,
         'sub_category': subCategory,

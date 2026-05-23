@@ -39,6 +39,7 @@ void main() {
     test('toFirestore writes correct Firestore field names', () {
       final t = transaction_model.Transaction.fromMap('txn-1', sampleMap);
       final map = t.toFirestore();
+      expect(map['id'], equals(t.id));
       expect(map.containsKey('user_id'), isTrue);
       expect(map.containsKey('sub_category'), isTrue);
       expect(map['user_id'], 'uid-123');

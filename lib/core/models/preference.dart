@@ -77,9 +77,10 @@ class Preference {
       };
 
   static List<BudgetData>? _budgetDataList(dynamic raw) {
-    if (raw == null) return null;
-    return (raw as List<dynamic>)
-        .map((e) => BudgetData.fromMap(e as Map<String, dynamic>))
+    if (raw == null || raw is! List) return null;
+    return raw
+        .map((e) => e is Map<String, dynamic> ? BudgetData.fromMap(e) : null)
+        .whereType<BudgetData>()
         .toList();
   }
 
