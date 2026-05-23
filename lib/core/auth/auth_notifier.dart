@@ -9,6 +9,10 @@ final authNotifierProvider =
 
 class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier() : super(const AuthLoading()) {
+    if (kIsWeb) {
+      // Complete any pending redirect sign-in (from signInWithRedirect)
+      FirebaseAuth.instance.getRedirectResult().ignore();
+    }
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
         state = const AuthUnauthenticated();
@@ -28,7 +32,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> signInWithGoogle() async {
     if (kIsWeb) {
       final provider = GoogleAuthProvider();
-      await FirebaseAuth.instance.signInWithPopup(provider);
+      try {
+        await FirebaseAuth.instance.signInWithPopup(provider);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'popup-blocked' || e.code == 'popup-closed-by-user') {
+          // Popup blocked — fall back to redirect flow (page navigates away)
+          await FirebaseAuth.instance.signInWithRedirect(provider);
+        } else {
+          rethrow;
+        }
+      }
     } else {
       final googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return;
