@@ -67,7 +67,7 @@ void main() {
     await tester.pump();
     // SizedBox.shrink has zero size — no sync-related Tooltip, no cloud icon
     final syncTooltip = find.byWidgetPredicate(
-      (w) => w is Tooltip && (w.message == 'Saving…' || w.message == 'Offline'),
+      (w) => w is Tooltip && (w.message == 'Saving...' || w.message == 'Offline'),
     );
     expect(syncTooltip, findsNothing);
     expect(find.byIcon(Icons.cloud_off_outlined), findsNothing);
@@ -84,7 +84,7 @@ void main() {
     );
     await tester.pump();
     final savingTooltip = find.byWidgetPredicate(
-      (w) => w is Tooltip && w.message == 'Saving…',
+      (w) => w is Tooltip && w.message == 'Saving...',
     );
     expect(savingTooltip, findsOneWidget);
   });

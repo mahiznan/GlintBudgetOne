@@ -106,7 +106,7 @@ class _SyncDot extends StatelessWidget {
     return switch (status) {
       SyncStatus.synced => const SizedBox.shrink(),
       SyncStatus.pending => const Tooltip(
-          message: 'Saving…',
+          message: 'Saving...',
           child: SizedBox(
             width: 10,
             height: 10,
