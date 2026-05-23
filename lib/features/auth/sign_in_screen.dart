@@ -20,9 +20,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     });
     try {
       await ref.read(authNotifierProvider.notifier).signInWithGoogle();
-    } catch (_) {
+    } catch (e) {
       if (mounted) {
-        setState(() => _error = 'Sign-in failed. Please try again.');
+        setState(() => _error = e.toString());
       }
     } finally {
       if (mounted) setState(() => _loading = false);
