@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:glintbudgetone/app/app_shell.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +23,9 @@ void main() {
 
   testWidgets('shows NavigationBar on narrow screen (<600px)', (tester) async {
     await tester.pumpWidget(
-      MaterialApp.router(routerConfig: buildRouter(screenWidth: 400)),
+      ProviderScope(
+        child: MaterialApp.router(routerConfig: buildRouter(screenWidth: 400)),
+      ),
     );
     await tester.pumpAndSettle();
     expect(find.byType(NavigationBar), findsOneWidget);
@@ -31,7 +34,9 @@ void main() {
 
   testWidgets('shows NavigationRail on wide screen (>=600px)', (tester) async {
     await tester.pumpWidget(
-      MaterialApp.router(routerConfig: buildRouter(screenWidth: 800)),
+      ProviderScope(
+        child: MaterialApp.router(routerConfig: buildRouter(screenWidth: 800)),
+      ),
     );
     await tester.pumpAndSettle();
     expect(find.byType(NavigationRail), findsOneWidget);
@@ -40,7 +45,9 @@ void main() {
 
   testWidgets('shows 3 destinations on narrow screen', (tester) async {
     await tester.pumpWidget(
-      MaterialApp.router(routerConfig: buildRouter(screenWidth: 400)),
+      ProviderScope(
+        child: MaterialApp.router(routerConfig: buildRouter(screenWidth: 400)),
+      ),
     );
     await tester.pumpAndSettle();
     expect(find.byType(NavigationDestination), findsNWidgets(3));

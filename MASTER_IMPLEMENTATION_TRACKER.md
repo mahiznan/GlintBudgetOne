@@ -1,7 +1,7 @@
 # GlintBudget Flutter — Master Implementation Tracker
 
 **Last updated:** 2026-05-24  
-**Current phase:** Phase 1 — Skeleton
+**Current phase:** Phase 2 — Data Layer
 
 ---
 
@@ -18,7 +18,7 @@ Single Flutter codebase for iOS, Android, Web. Feature modules + shared core. Ri
 | Phase | Status | Notes |
 |---|---|---|
 | Phase 1 — Skeleton | ✅ Complete | |
-| Phase 2 — Data Layer | ⬜ Not started | |
+| Phase 2 — Data Layer | ✅ Complete | |
 | Phase 3 — Feature Parity | ⬜ Not started | |
 | Phase 4 — iOS-only + App Store | ⬜ Not started | |
 
@@ -33,11 +33,15 @@ Single Flutter codebase for iOS, Android, Web. Feature modules + shared core. Ri
 | App shell (adaptive nav) | ✅ | `lib/app/app_shell.dart` |
 | App router | ✅ | `lib/app/app_router.dart` |
 | Sign-in screen | ✅ | `lib/features/auth/sign_in_screen.dart` |
+| Data models | ✅ | `lib/core/models/` |
+| Firestore stream providers | ✅ | `lib/core/store/firestore_providers.dart` |
+| Derived providers | ✅ | `lib/core/store/derived_providers.dart` |
+| Transaction mutations | ✅ | `lib/core/store/transaction_mutations.dart` |
+| Preference mutations | ✅ | `lib/core/store/preference_mutations.dart` |
+| Sync status | ✅ | `lib/core/sync/sync_status.dart` |
 | Dashboard screen | ⬜ Placeholder | `lib/features/dashboard/` |
 | Transactions screen | ⬜ Placeholder | `lib/features/transactions/` |
 | Settings screen | ⬜ Placeholder | `lib/features/settings/` |
-| Firestore streams | ⬜ Phase 2 | `lib/core/store/` |
-| Sync status | ⬜ Phase 2 | `lib/core/sync/` |
 
 ---
 

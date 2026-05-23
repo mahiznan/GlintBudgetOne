@@ -1,7 +1,11 @@
+// lib/app/app_shell.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../core/store/derived_providers.dart';
+import '../core/sync/sync_status.dart';
 
-class AppShell extends StatelessWidget {
+class AppShell extends ConsumerWidget {
   const AppShell({super.key, required this.child});
 
   final Widget child;
@@ -41,9 +45,10 @@ class AppShell extends StatelessWidget {
   void _onTap(BuildContext context, int index) => context.go(_routes[index]);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = _selectedIndex(context);
     final isWide = MediaQuery.sizeOf(context).width >= 600;
+    final syncStatus = ref.watch(syncStatusProvider);
 
     if (isWide) {
       return Scaffold(
@@ -53,6 +58,10 @@ class AppShell extends StatelessWidget {
               selectedIndex: selectedIndex,
               onDestinationSelected: (i) => _onTap(context, i),
               labelType: NavigationRailLabelType.all,
+              trailing: Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _SyncDot(syncStatus),
+              ),
               destinations: _destinations
                   .map((d) => NavigationRailDestination(
                         icon: d.icon,
@@ -69,6 +78,14 @@ class AppShell extends StatelessWidget {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: _SyncDot(syncStatus),
+          ),
+        ],
+      ),
       body: child,
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
@@ -76,5 +93,33 @@ class AppShell extends StatelessWidget {
         destinations: _destinations,
       ),
     );
+  }
+}
+
+class _SyncDot extends StatelessWidget {
+  const _SyncDot(this.status);
+
+  final SyncStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    return switch (status) {
+      SyncStatus.synced => const SizedBox.shrink(),
+      SyncStatus.pending => Tooltip(
+          message: 'Saving…',
+          child: Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      SyncStatus.offline => const Tooltip(
+          message: 'Offline',
+          child: Icon(Icons.cloud_off_outlined, size: 18),
+        ),
+    };
   }
 }
