@@ -47,6 +47,7 @@ final dashboardStatsProvider = Provider<DashboardStats>((ref) {
 /// Sync status derived from the raw Firestore snapshot metadata.
 final syncStatusProvider = Provider<SyncStatus>((ref) {
   final snapshot = ref.watch(preferenceSnapshotProvider).valueOrNull;
+  // Loading state has no metadata — treat as synced to avoid startup flash
   if (snapshot == null) return SyncStatus.synced;
   return syncStatusFromFlags(
     hasPendingWrites: snapshot.metadata.hasPendingWrites,
