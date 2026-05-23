@@ -6,7 +6,7 @@ class TransactionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Transactions — coming in Phase 3'),
+      child: Text('Transactions - coming in Phase 3'),
     );
   }
 }
