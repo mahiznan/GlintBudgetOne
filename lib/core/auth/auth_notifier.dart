@@ -1,0 +1,43 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'auth_state.dart';
+
+final authNotifierProvider =
+    StateNotifierProvider<AuthNotifier, AuthState>((ref) => AuthNotifier());
+
+class AuthNotifier extends StateNotifier<AuthState> {
+  AuthNotifier() : super(const AuthLoading()) {
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user == null) {
+        state = const AuthUnauthenticated();
+      } else {
+        state = AuthAuthenticated(
+          user: AuthUser(
+            uid: user.uid,
+            email: user.email ?? '',
+            displayName: user.displayName,
+            photoUrl: user.photoURL,
+          ),
+        );
+      }
+    });
+  }
+
+  Future<void> signInWithGoogle() async {
+    final googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) return;
+
+    final googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<void> signOut() async {
+    await GoogleSignIn().signOut();
+    await FirebaseAuth.instance.signOut();
+  }
+}
