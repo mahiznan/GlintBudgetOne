@@ -1,7 +1,7 @@
 # GlintBudget Flutter — Master Implementation Tracker
 
 **Last updated:** 2026-05-24  
-**Current phase:** Phase 2 — Data Layer
+**Current phase:** Phase 3 — Feature Parity
 
 ---
 
@@ -19,7 +19,7 @@ Single Flutter codebase for iOS, Android, Web. Feature modules + shared core. Ri
 |---|---|---|
 | Phase 1 — Skeleton | ✅ Complete | |
 | Phase 2 — Data Layer | ✅ Complete | |
-| Phase 3 — Feature Parity | ⬜ Not started | |
+| Phase 3 — Feature Parity | ✅ Complete | |
 | Phase 4 — iOS-only + App Store | ⬜ Not started | |
 
 ---
@@ -39,9 +39,15 @@ Single Flutter codebase for iOS, Android, Web. Feature modules + shared core. Ri
 | Transaction mutations | ✅ | `lib/core/store/transaction_mutations.dart` |
 | Preference mutations | ✅ | `lib/core/store/preference_mutations.dart` |
 | Sync status | ✅ | `lib/core/sync/sync_status.dart` |
-| Dashboard screen | ⬜ Placeholder | `lib/features/dashboard/` |
-| Transactions screen | ⬜ Placeholder | `lib/features/transactions/` |
-| Settings screen | ⬜ Placeholder | `lib/features/settings/` |
+| Dashboard screen | ✅ | `lib/features/dashboard/` |
+| Transactions screen | ✅ | `lib/features/transactions/` |
+| Settings screen | ✅ | `lib/features/settings/` |
+| Add/Edit transaction form | ✅ | `lib/features/add_transaction/` |
+| Currency list | ✅ | `lib/core/currencies.dart` |
+| Shared transaction tile | ✅ | `lib/core/widgets/transaction_tile.dart` |
+| Default entries sub-screen | ✅ | `lib/features/settings/screens/` |
+| Currency selection sub-screen | ✅ | `lib/features/settings/screens/` |
+| Dashboard widgets | ✅ | `lib/features/dashboard/widgets/` |
 
 ---
 
