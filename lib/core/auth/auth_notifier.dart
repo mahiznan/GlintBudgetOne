@@ -29,6 +29,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     });
   }
 
+  /// Named constructor for use in widget tests — skips all Firebase calls.
+  @visibleForTesting
+  AuthNotifier.stub(super.initial);
+
   Future<void> signInWithGoogle() async {
     if (kIsWeb) {
       final provider = GoogleAuthProvider();
