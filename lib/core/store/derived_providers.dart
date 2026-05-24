@@ -54,3 +54,21 @@ final syncStatusProvider = Provider<SyncStatus>((ref) {
     isFromCache: snapshot.metadata.isFromCache,
   );
 });
+
+/// Live text search query for the Transactions screen.
+final searchQueryProvider = StateProvider<String>((ref) => '');
+
+/// All transactions (not month-filtered) matching the search query.
+/// Empty query returns everything.
+final searchedTransactionsProvider = Provider<List<Transaction>>((ref) {
+  final all = ref.watch(transactionsStreamProvider).valueOrNull ?? [];
+  final query = ref.watch(searchQueryProvider).trim().toLowerCase();
+  if (query.isEmpty) return all;
+  return all.where((t) =>
+    t.vendor.toLowerCase().contains(query) ||
+    t.category.toLowerCase().contains(query) ||
+    t.subCategory.toLowerCase().contains(query) ||
+    t.account.toLowerCase().contains(query) ||
+    t.notes.toLowerCase().contains(query)
+  ).toList();
+});

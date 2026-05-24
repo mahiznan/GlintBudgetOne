@@ -118,4 +118,73 @@ void main() {
       expect(stats, equals(DashboardStats.empty));
     });
   });
+
+  group('searchedTransactionsProvider', () {
+    Transaction makeTx({
+      required String id,
+      required String vendor,
+      String category = 'Food',
+      String subCategory = 'Groceries',
+      String account = 'Cash',
+      String notes = '',
+    }) =>
+        Transaction(
+          id: id,
+          userId: 'u1',
+          category: category,
+          subCategory: subCategory,
+          date: DateTime(2026, 5, 10),
+          account: account,
+          vendor: vendor,
+          payment: 'Card',
+          currency: 'SGD',
+          notes: notes,
+          amount: -10.0,
+          icon: '🛒',
+        );
+
+    ProviderContainer makeContainer(List<Transaction> txns, String query) {
+      return ProviderContainer(overrides: [
+        transactionsStreamProvider.overrideWith((_) async* { yield txns; }),
+        searchQueryProvider.overrideWith((ref) => query),
+      ]);
+    }
+
+    test('empty query returns all transactions', () async {
+      final txns = [makeTx(id: '1', vendor: 'Fairprice'), makeTx(id: '2', vendor: 'Grab')];
+      final c = makeContainer(txns, '');
+      addTearDown(c.dispose);
+      await c.read(transactionsStreamProvider.future);
+      expect(c.read(searchedTransactionsProvider).length, equals(2));
+    });
+
+    test('filters by vendor case-insensitively', () async {
+      final txns = [makeTx(id: '1', vendor: 'Fairprice'), makeTx(id: '2', vendor: 'Grab')];
+      final c = makeContainer(txns, 'fair');
+      addTearDown(c.dispose);
+      await c.read(transactionsStreamProvider.future);
+      final result = c.read(searchedTransactionsProvider);
+      expect(result.length, equals(1));
+      expect(result.first.id, equals('1'));
+    });
+
+    test('filters by category', () async {
+      final txns = [
+        makeTx(id: '1', vendor: 'Shell', category: 'Transport'),
+        makeTx(id: '2', vendor: 'NTUC', category: 'Food'),
+      ];
+      final c = makeContainer(txns, 'transport');
+      addTearDown(c.dispose);
+      await c.read(transactionsStreamProvider.future);
+      expect(c.read(searchedTransactionsProvider).single.id, equals('1'));
+    });
+
+    test('no matches returns empty list', () async {
+      final txns = [makeTx(id: '1', vendor: 'Fairprice')];
+      final c = makeContainer(txns, 'zzz');
+      addTearDown(c.dispose);
+      await c.read(transactionsStreamProvider.future);
+      expect(c.read(searchedTransactionsProvider), isEmpty);
+    });
+  });
 }
