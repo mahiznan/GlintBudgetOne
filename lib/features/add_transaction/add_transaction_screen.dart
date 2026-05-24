@@ -298,7 +298,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       '${d.year}';
 }
 
-class _DropdownField extends StatelessWidget {
+class _DropdownField extends StatefulWidget {
   const _DropdownField({
     required this.label,
     required this.value,
@@ -312,34 +312,62 @@ class _DropdownField extends StatelessWidget {
   final ValueChanged<String?> onChanged;
 
   @override
+  State<_DropdownField> createState() => _DropdownFieldState();
+}
+
+class _DropdownFieldState extends State<_DropdownField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.value);
+  }
+
+  @override
+  void didUpdateWidget(_DropdownField old) {
+    super.didUpdateWidget(old);
+    if (old.value != widget.value) {
+      _controller.text = widget.value ?? '';
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (options.isEmpty) {
+    if (widget.options.isEmpty) {
       return TextField(
-        controller: TextEditingController(text: value),
+        controller: _controller,
         decoration: InputDecoration(
-          labelText: label,
+          labelText: widget.label,
           border: const OutlineInputBorder(),
         ),
-        onChanged: onChanged,
+        onChanged: widget.onChanged,
       );
     }
-    final validValue = options.any((o) => o.name == value) ? value : null;
+    final validValue =
+        widget.options.any((o) => o.name == widget.value) ? widget.value : null;
     return DropdownButtonFormField<String>(
       initialValue: validValue,
       decoration: InputDecoration(
-        labelText: label,
+        labelText: widget.label,
         border: const OutlineInputBorder(),
       ),
       items: [
         const DropdownMenuItem<String>(value: null, child: Text('None')),
-        ...options.map((o) => DropdownMenuItem(
+        ...widget.options.map((o) => DropdownMenuItem(
               value: o.name,
               child: Text(
                 o.emoji != null ? '${o.emoji} ${o.name}' : o.name,
               ),
             )),
       ],
-      onChanged: onChanged,
+      onChanged: widget.onChanged,
     );
   }
 }
